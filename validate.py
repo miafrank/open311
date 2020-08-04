@@ -1,26 +1,38 @@
-from api import get_resource_response
+from api import get_resource_response, get_resource_response_with_id
 from load_schemas import load_resources
 import logging
+import pprint
 
 logging.basicConfig(level=logging.INFO)
 
 # load open311 schema and urls of cities that implemented open311 spec
-request_schema, service_schema, cities = load_resources()
+request_schema, service_schema, service_definition_schema, cities = load_resources()
 og_request_schema = {field_name: {"type": "string"} for field_name in request_schema["properties"]}
 og_service_schema = {field_name: {"type": "string"} for field_name in service_schema["properties"]}
+og_service_definition_schema = {field_name: {"type": "string"}
+                                for field_name in service_definition_schema["properties"]["attributes"]["items"]["properties"]}
 
 
-def validate_cities_with_schema(city, url, resource, schema):
+def validate_cities_with_schema(city, resource, api_response, schema):
     validate_schema = []
-    city_impl = get_resource_response(url.get("url"), resource)
-    for attr in city_impl:
+    for attr in api_response:
         if attr not in schema:
             validate_schema.append(False)
         validate_schema.append(True)
     assert any(validate_schema)
-    logging.info(f" city: {city} schema valid for {resource}")
+    logging.info(f" city: {city} schema valid for resource: /{resource}")
 
 
 for city_name, city_url in cities.items():
-    # validate_cities_with_schema(city_name, city_url, "requests", og_request_schema)
-    validate_cities_with_schema(city_name, city_url, "services", og_service_schema)
+    validate_cities_with_schema(city=city_name,
+                                resource="requests",
+                                schema=og_request_schema,
+                                api_response=get_resource_response(city_url.get("url"), "requests"))
+    validate_cities_with_schema(city=city_name,
+                                resource="services",
+                                schema=og_service_schema,
+                                api_response=get_resource_response(city_url.get("url"), "requests"))
+    validate_cities_with_schema(city=city_name,
+                                resource="service definition",
+                                schema=og_service_schema,
+                                api_response=get_resource_response_with_id(city_url.get("url"), "services"))
