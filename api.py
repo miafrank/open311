@@ -1,5 +1,5 @@
 import requests
-from pprint import pprint
+
 # https://[API endpoint]/services.[format]
 # https://[API endpoint]/services/id.[format]
 
@@ -18,10 +18,10 @@ def get_resource_response(api_endpoint, resource):
 
 
 def get_resource_response_with_id(api_endpoint, resource, city):
-    service_id = get_resource_response(api_endpoint, resource)["service_code"]
     if city == 'bloomington':
         service_id = '37'
-    if city == 'peoria':
+    elif city == 'peoria':
         service_id = '51'
-    print(service_id)
+    else:
+        service_id = get_resource_response(api_endpoint, resource)["service_code"]
     return requests.get(build_open311_resources_url_with_id(api_endpoint, resource, service_id)).json()["attributes"][0]
