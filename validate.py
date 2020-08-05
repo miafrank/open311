@@ -19,7 +19,7 @@ def validate_cities_with_schema(city, resource, api_response, schema):
             validate_schema.append(False)
         validate_schema.append(True)
 
-    assert any(validate_schema)
+    assert all(validate_schema)
     logging.info(f" city: {city} schema valid for resource: /{resource}")
 
 
@@ -31,8 +31,8 @@ for city_name, city_url in cities.items():
     validate_cities_with_schema(city=city_name,
                                 resource="services",
                                 schema=og_service_schema,
-                                api_response=get_resource_response(city_url.get("url"), "requests"))
+                                api_response=get_resource_response(city_url.get("url"), "services"))
     validate_cities_with_schema(city=city_name,
                                 resource="service definition",
-                                schema=og_service_schema,
+                                schema=og_service_definition_schema,
                                 api_response=get_resource_response_with_id(city_url.get("url"), "services", city_name))

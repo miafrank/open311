@@ -23,4 +23,5 @@ def get_resource_response_with_id(api_endpoint, resource, city):
         service_id = '37'
     if city == 'peoria':
         service_id = '51'
+    print(service_id)
     return requests.get(build_open311_resources_url_with_id(api_endpoint, resource, service_id)).json()["attributes"][0]
