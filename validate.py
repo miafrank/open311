@@ -1,7 +1,6 @@
 from api import get_resource_response, get_resource_response_with_id
 from load_schemas import load_resources
 import logging
-import pprint
 
 logging.basicConfig(level=logging.INFO)
 
@@ -19,6 +18,7 @@ def validate_cities_with_schema(city, resource, api_response, schema):
         if attr not in schema:
             validate_schema.append(False)
         validate_schema.append(True)
+
     assert any(validate_schema)
     logging.info(f" city: {city} schema valid for resource: /{resource}")
 
@@ -35,4 +35,4 @@ for city_name, city_url in cities.items():
     validate_cities_with_schema(city=city_name,
                                 resource="service definition",
                                 schema=og_service_schema,
-                                api_response=get_resource_response_with_id(city_url.get("url"), "services"))
+                                api_response=get_resource_response_with_id(city_url.get("url"), "services", city_name))

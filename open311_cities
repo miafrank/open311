@@ -8,9 +8,6 @@
     "brookline": {
         "url": "http://spot.brooklinema.gov/open311/v2/"
     },
-    "bloomington": {
-        "url": "https://bloomington.in.gov/crm/open311/v2/"
-    },
     "boston": {
         "url": "https://mayors24.cityofboston.gov/open311/v2/"
     },
@@ -19,5 +16,8 @@
     },
     "peoria": {
         "url": "https://ureport.peoriagov.org/crm/open311/v2/"
+    },
+    "bloomington": {
+        "url": "https://bloomington.in.gov/crm/open311/v2/"
     }
 }
