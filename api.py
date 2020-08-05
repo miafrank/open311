@@ -18,6 +18,8 @@ def get_resource_response(api_endpoint, resource):
 
 
 def get_resource_response_with_id(api_endpoint, resource, city):
+    # bloomington and peoria contain multiple services that do not have definitions
+    # use service id with a definite service definition
     if city == 'bloomington':
         service_id = '37'
     elif city == 'peoria':
